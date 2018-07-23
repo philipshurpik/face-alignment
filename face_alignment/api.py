@@ -55,7 +55,7 @@ class FaceAlignment:
 
     def __init__(self, landmarks_type, network_size=NetworkSize.LARGE,
                  enable_cuda=True, enable_cudnn=True, flip_input=False,
-                 use_cnn_face_detector=False):
+                 use_cnn_face_detector=True):
         self.enable_cuda = enable_cuda
         self.use_cnn_face_detector = use_cnn_face_detector
         self.flip_input = flip_input
@@ -146,7 +146,7 @@ class FaceAlignment:
         Returns:
             Returns a list of detected faces
         """
-        return self.face_detector(image, 1)
+        return self.face_detector(image, 1) if max(image.shape) < 512 else self.face_detector(image)
 
     def get_landmarks(self, input_image, all_faces=False):
         with torch.no_grad():
